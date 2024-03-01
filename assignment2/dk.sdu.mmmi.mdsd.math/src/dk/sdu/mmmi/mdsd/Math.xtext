@@ -7,11 +7,11 @@ MathExp:
 ;
 
 Exp:
-	left=Number (operator=ExpOp right=Number)?
+	left=Primary (operators+=ExpOp exps+=Primary)*
 ;
 
 ExpOp:
-	{Plus} '+' | {Minus} '-'	 | {Mult} '*' | {Div} '/'	
+	{Plus} '+' | {Minus} '-' | {Mult} '*' | {Div} '/'	
 ;
 
 Primary:

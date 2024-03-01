@@ -10,6 +10,9 @@ import dk.sdu.mmmi.mdsd.math.Minus
 import dk.sdu.mmmi.mdsd.math.Mult
 import dk.sdu.mmmi.mdsd.math.Plus
 import dk.sdu.mmmi.mdsd.math.Primary
+import dk.sdu.mmmi.mdsd.math.Number
+import dk.sdu.mmmi.mdsd.math.Parenthesis
+import dk.sdu.mmmi.mdsd.math.VariableUse
 import java.util.HashMap
 import java.util.Map
 import javax.swing.JOptionPane
@@ -41,23 +44,47 @@ class MathGenerator extends AbstractGenerator {
 	//
 	
 	def static compute(MathExp math) { 
-		math.exp.computeExp
+		val result = math.exp.computeExp
+		variables.put(math.name, result)
 		return variables
 	}
 	
 	def static int computeExp(Exp exp) {
-		val left = exp.left.computePrim
-		switch exp.operator {
-			Plus: left+exp.right.computePrim
-			Minus: left-exp.right.computePrim
-			Mult: left*exp.right.computePrim
-			Div: left/exp.right.computePrim
-			default: left
+		if (exp.left instanceof Number) {
+			var left = exp.left.computePrim
+			System.out.println(exp.exps.size())
+			
+			for (var i = 0; i < exp.exps.size(); i++) {
+				if (exp.exps.get(i) instanceof Number) {
+					switch exp.operators.get(i) {
+						Plus: left+=(exp.exps.get(i) as Number).computePrim
+						Minus: left-=(exp.exps.get(i) as Number).computePrim
+						Mult: left*=(exp.exps.get(i) as Number).computePrim
+						Div: left/=(exp.exps.get(i) as Number).computePrim
+					}
+				} else {
+					System.out.println("\n \n IT IS NOT A NUMBER!! \n")
+					return 0
+				}
+			}
+			
+			return left
+		} else {
+			System.out.println("\n \n IT IS NOT A NUMBER!! \n")
+			return 0
 		}
 	}
 	
-	def static int computePrim(Primary factor) { 
-		87
+	def static int computePrim(Primary factor) {
+		System.out.print(factor)
+		if (factor instanceof Number) {
+		    return (factor as Number).value
+		} else if (factor instanceof Parenthesis){
+			System.out.print((factor as Parenthesis))
+		} else if (factor instanceof VariableUse) {
+			System.out.print((factor as VariableUse))
+		}
+		0
 	}
 
 	def void displayPanel(Map<String, Integer> result) {
