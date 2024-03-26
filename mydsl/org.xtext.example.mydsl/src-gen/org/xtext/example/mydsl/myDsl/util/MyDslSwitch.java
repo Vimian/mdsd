@@ -87,6 +87,13 @@ public class MyDslSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MyDslPackage.REQUIRE:
+      {
+        Require require = (Require)theEObject;
+        T result = caseRequire(require);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MyDslPackage.ATTRIBUTE:
       {
         Attribute attribute = (Attribute)theEObject;
@@ -105,6 +112,7 @@ public class MyDslSwitch<T> extends Switch<T>
       {
         Inheritance inheritance = (Inheritance)theEObject;
         T result = caseInheritance(inheritance);
+        if (result == null) result = caseRelation(inheritance);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -112,6 +120,7 @@ public class MyDslSwitch<T> extends Switch<T>
       {
         Association association = (Association)theEObject;
         T result = caseAssociation(association);
+        if (result == null) result = caseRelation(association);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -147,6 +156,22 @@ public class MyDslSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseEntity(Entity object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Require</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Require</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRequire(Require object)
   {
     return null;
   }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Alternatives;
 import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.CrossReference;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.Group;
@@ -72,14 +73,17 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		private final Keyword cEntityKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Assignment cAttributesAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cAttributesAttributeParserRuleCall_2_0 = (RuleCall)cAttributesAssignment_2.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cAttributesAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cAttributesAttributeParserRuleCall_2_0_0 = (RuleCall)cAttributesAssignment_2_0.eContents().get(0);
+		private final Assignment cRequiresAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cRequiresRequireParserRuleCall_2_1_0 = (RuleCall)cRequiresAssignment_2_1.eContents().get(0);
 		
 		//Entity:
-		//    'entity' name=ID attributes+=Attribute*;
+		//    'entity' name=ID (attributes+=Attribute | requires+=Require)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'entity' name=ID attributes+=Attribute*
+		//'entity' name=ID (attributes+=Attribute | requires+=Require)*
 		public Group getGroup() { return cGroup; }
 		
 		//'entity'
@@ -91,11 +95,59 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//attributes+=Attribute*
-		public Assignment getAttributesAssignment_2() { return cAttributesAssignment_2; }
+		//(attributes+=Attribute | requires+=Require)*
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		
+		//attributes+=Attribute
+		public Assignment getAttributesAssignment_2_0() { return cAttributesAssignment_2_0; }
 		
 		//Attribute
-		public RuleCall getAttributesAttributeParserRuleCall_2_0() { return cAttributesAttributeParserRuleCall_2_0; }
+		public RuleCall getAttributesAttributeParserRuleCall_2_0_0() { return cAttributesAttributeParserRuleCall_2_0_0; }
+		
+		//requires+=Require
+		public Assignment getRequiresAssignment_2_1() { return cRequiresAssignment_2_1; }
+		
+		//Require
+		public RuleCall getRequiresRequireParserRuleCall_2_1_0() { return cRequiresRequireParserRuleCall_2_1_0; }
+	}
+	public class RequireElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Require");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cRequireKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cLeftAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cLeftAttributeCrossReference_1_0 = (CrossReference)cLeftAssignment_1.eContents().get(0);
+		private final RuleCall cLeftAttributeIDTerminalRuleCall_1_0_1 = (RuleCall)cLeftAttributeCrossReference_1_0.eContents().get(1);
+		private final Keyword cEqualsSignGreaterThanSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cRightAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cRightINTTerminalRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
+		
+		//Require:
+		//    'require' left=[Attribute] '=>' right=INT;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'require' left=[Attribute] '=>' right=INT
+		public Group getGroup() { return cGroup; }
+		
+		//'require'
+		public Keyword getRequireKeyword_0() { return cRequireKeyword_0; }
+		
+		//left=[Attribute]
+		public Assignment getLeftAssignment_1() { return cLeftAssignment_1; }
+		
+		//[Attribute]
+		public CrossReference getLeftAttributeCrossReference_1_0() { return cLeftAttributeCrossReference_1_0; }
+		
+		//ID
+		public RuleCall getLeftAttributeIDTerminalRuleCall_1_0_1() { return cLeftAttributeIDTerminalRuleCall_1_0_1; }
+		
+		//'=>'
+		public Keyword getEqualsSignGreaterThanSignKeyword_2() { return cEqualsSignGreaterThanSignKeyword_2; }
+		
+		//right=INT
+		public Assignment getRightAssignment_3() { return cRightAssignment_3; }
+		
+		//INT
+		public RuleCall getRightINTTerminalRuleCall_3_0() { return cRightINTTerminalRuleCall_3_0; }
 	}
 	public class AttributeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Attribute");
@@ -153,146 +205,145 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 	}
 	public class RelationElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Relation");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cRelationAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cRelationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final Alternatives cRelationsAlternatives_1_0 = (Alternatives)cRelationsAssignment_1.eContents().get(0);
-		private final RuleCall cRelationsInheritanceParserRuleCall_1_0_0 = (RuleCall)cRelationsAlternatives_1_0.eContents().get(0);
-		private final RuleCall cRelationsAssociationParserRuleCall_1_0_1 = (RuleCall)cRelationsAlternatives_1_0.eContents().get(1);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cInheritanceAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Keyword cRelationKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cBaseEntityAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final CrossReference cBaseEntityEntityCrossReference_0_2_0 = (CrossReference)cBaseEntityAssignment_0_2.eContents().get(0);
+		private final RuleCall cBaseEntityEntityIDTerminalRuleCall_0_2_0_1 = (RuleCall)cBaseEntityEntityCrossReference_0_2_0.eContents().get(1);
+		private final Keyword cIsKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
+		private final Assignment cSuperEntityAssignment_0_4 = (Assignment)cGroup_0.eContents().get(4);
+		private final CrossReference cSuperEntityEntityCrossReference_0_4_0 = (CrossReference)cSuperEntityAssignment_0_4.eContents().get(0);
+		private final RuleCall cSuperEntityEntityIDTerminalRuleCall_0_4_0_1 = (RuleCall)cSuperEntityEntityCrossReference_0_4_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cAssociationAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cRelationKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Alternatives cAlternatives_1_2 = (Alternatives)cGroup_1.eContents().get(2);
+		private final Keyword cAKeyword_1_2_0 = (Keyword)cAlternatives_1_2.eContents().get(0);
+		private final Assignment cManyFromAssignment_1_2_1 = (Assignment)cAlternatives_1_2.eContents().get(1);
+		private final Keyword cManyFromManyKeyword_1_2_1_0 = (Keyword)cManyFromAssignment_1_2_1.eContents().get(0);
+		private final Assignment cFromAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
+		private final CrossReference cFromEntityCrossReference_1_3_0 = (CrossReference)cFromAssignment_1_3.eContents().get(0);
+		private final RuleCall cFromEntityIDTerminalRuleCall_1_3_0_1 = (RuleCall)cFromEntityCrossReference_1_3_0.eContents().get(1);
+		private final Alternatives cAlternatives_1_4 = (Alternatives)cGroup_1.eContents().get(4);
+		private final Keyword cHasKeyword_1_4_0 = (Keyword)cAlternatives_1_4.eContents().get(0);
+		private final Keyword cHaveKeyword_1_4_1 = (Keyword)cAlternatives_1_4.eContents().get(1);
+		private final Alternatives cAlternatives_1_5 = (Alternatives)cGroup_1.eContents().get(5);
+		private final Keyword cAKeyword_1_5_0 = (Keyword)cAlternatives_1_5.eContents().get(0);
+		private final Assignment cManyToAssignment_1_5_1 = (Assignment)cAlternatives_1_5.eContents().get(1);
+		private final Keyword cManyToManyKeyword_1_5_1_0 = (Keyword)cManyToAssignment_1_5_1.eContents().get(0);
+		private final Assignment cToAssignment_1_6 = (Assignment)cGroup_1.eContents().get(6);
+		private final CrossReference cToEntityCrossReference_1_6_0 = (CrossReference)cToAssignment_1_6.eContents().get(0);
+		private final RuleCall cToEntityIDTerminalRuleCall_1_6_0_1 = (RuleCall)cToEntityCrossReference_1_6_0.eContents().get(1);
 		
 		//Relation:
-		//    {Relation} relations+=(Inheritance | Association)*;
+		//    {Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity] |
+		//    {Association} 'relation' ('a' |manyFrom?='many')? from=[Entity] ('has' | 'have') ('a' |manyTo?='many')? to=[Entity];
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Relation} relations+=(Inheritance | Association)*
-		public Group getGroup() { return cGroup; }
+		//{Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity] |
+		//{Association} 'relation' ('a' |manyFrom?='many')? from=[Entity] ('has' | 'have') ('a' |manyTo?='many')? to=[Entity]
+		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//{Relation}
-		public Action getRelationAction_0() { return cRelationAction_0; }
+		//{Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity]
+		public Group getGroup_0() { return cGroup_0; }
 		
-		//relations+=(Inheritance | Association)*
-		public Assignment getRelationsAssignment_1() { return cRelationsAssignment_1; }
-		
-		//(Inheritance | Association)
-		public Alternatives getRelationsAlternatives_1_0() { return cRelationsAlternatives_1_0; }
-		
-		//Inheritance
-		public RuleCall getRelationsInheritanceParserRuleCall_1_0_0() { return cRelationsInheritanceParserRuleCall_1_0_0; }
-		
-		//Association
-		public RuleCall getRelationsAssociationParserRuleCall_1_0_1() { return cRelationsAssociationParserRuleCall_1_0_1; }
-	}
-	public class InheritanceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Inheritance");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cRelationKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cFromAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cFromIDTerminalRuleCall_1_0 = (RuleCall)cFromAssignment_1.eContents().get(0);
-		private final Keyword cIsKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cToAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cToIDTerminalRuleCall_3_0 = (RuleCall)cToAssignment_3.eContents().get(0);
-		
-		//Inheritance:
-		//    'relation' from=ID 'is' to=ID;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//'relation' from=ID 'is' to=ID
-		public Group getGroup() { return cGroup; }
+		//{Inheritance}
+		public Action getInheritanceAction_0_0() { return cInheritanceAction_0_0; }
 		
 		//'relation'
-		public Keyword getRelationKeyword_0() { return cRelationKeyword_0; }
+		public Keyword getRelationKeyword_0_1() { return cRelationKeyword_0_1; }
 		
-		//from=ID
-		public Assignment getFromAssignment_1() { return cFromAssignment_1; }
+		//baseEntity=[Entity]
+		public Assignment getBaseEntityAssignment_0_2() { return cBaseEntityAssignment_0_2; }
+		
+		//[Entity]
+		public CrossReference getBaseEntityEntityCrossReference_0_2_0() { return cBaseEntityEntityCrossReference_0_2_0; }
 		
 		//ID
-		public RuleCall getFromIDTerminalRuleCall_1_0() { return cFromIDTerminalRuleCall_1_0; }
+		public RuleCall getBaseEntityEntityIDTerminalRuleCall_0_2_0_1() { return cBaseEntityEntityIDTerminalRuleCall_0_2_0_1; }
 		
 		//'is'
-		public Keyword getIsKeyword_2() { return cIsKeyword_2; }
+		public Keyword getIsKeyword_0_3() { return cIsKeyword_0_3; }
 		
-		//to=ID
-		public Assignment getToAssignment_3() { return cToAssignment_3; }
+		//superEntity=[Entity]
+		public Assignment getSuperEntityAssignment_0_4() { return cSuperEntityAssignment_0_4; }
+		
+		//[Entity]
+		public CrossReference getSuperEntityEntityCrossReference_0_4_0() { return cSuperEntityEntityCrossReference_0_4_0; }
 		
 		//ID
-		public RuleCall getToIDTerminalRuleCall_3_0() { return cToIDTerminalRuleCall_3_0; }
-	}
-	public class AssociationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.xtext.example.mydsl.MyDsl.Association");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cRelationKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Keyword cAKeyword_1_0 = (Keyword)cAlternatives_1.eContents().get(0);
-		private final Keyword cManyKeyword_1_1 = (Keyword)cAlternatives_1.eContents().get(1);
-		private final Assignment cFromAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cFromIDTerminalRuleCall_2_0 = (RuleCall)cFromAssignment_2.eContents().get(0);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Keyword cHasKeyword_3_0 = (Keyword)cAlternatives_3.eContents().get(0);
-		private final Keyword cHaveKeyword_3_1 = (Keyword)cAlternatives_3.eContents().get(1);
-		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
-		private final Keyword cAKeyword_4_0 = (Keyword)cAlternatives_4.eContents().get(0);
-		private final Keyword cManyKeyword_4_1 = (Keyword)cAlternatives_4.eContents().get(1);
-		private final Assignment cToAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cToIDTerminalRuleCall_5_0 = (RuleCall)cToAssignment_5.eContents().get(0);
+		public RuleCall getSuperEntityEntityIDTerminalRuleCall_0_4_0_1() { return cSuperEntityEntityIDTerminalRuleCall_0_4_0_1; }
 		
-		//Association:
-		//    'relation' ('a' | 'many')* from=ID ('has' | 'have') ('a' | 'many')* to=ID;
-		@Override public ParserRule getRule() { return rule; }
+		//{Association} 'relation' ('a' |manyFrom?='many')? from=[Entity] ('has' | 'have') ('a' |manyTo?='many')? to=[Entity]
+		public Group getGroup_1() { return cGroup_1; }
 		
-		//'relation' ('a' | 'many')* from=ID ('has' | 'have') ('a' | 'many')* to=ID
-		public Group getGroup() { return cGroup; }
+		//{Association}
+		public Action getAssociationAction_1_0() { return cAssociationAction_1_0; }
 		
 		//'relation'
-		public Keyword getRelationKeyword_0() { return cRelationKeyword_0; }
+		public Keyword getRelationKeyword_1_1() { return cRelationKeyword_1_1; }
 		
-		//('a' | 'many')*
-		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		//('a' |manyFrom?='many')?
+		public Alternatives getAlternatives_1_2() { return cAlternatives_1_2; }
 		
 		//'a'
-		public Keyword getAKeyword_1_0() { return cAKeyword_1_0; }
+		public Keyword getAKeyword_1_2_0() { return cAKeyword_1_2_0; }
+		
+		//manyFrom?='many'
+		public Assignment getManyFromAssignment_1_2_1() { return cManyFromAssignment_1_2_1; }
 		
 		//'many'
-		public Keyword getManyKeyword_1_1() { return cManyKeyword_1_1; }
+		public Keyword getManyFromManyKeyword_1_2_1_0() { return cManyFromManyKeyword_1_2_1_0; }
 		
-		//from=ID
-		public Assignment getFromAssignment_2() { return cFromAssignment_2; }
+		//from=[Entity]
+		public Assignment getFromAssignment_1_3() { return cFromAssignment_1_3; }
+		
+		//[Entity]
+		public CrossReference getFromEntityCrossReference_1_3_0() { return cFromEntityCrossReference_1_3_0; }
 		
 		//ID
-		public RuleCall getFromIDTerminalRuleCall_2_0() { return cFromIDTerminalRuleCall_2_0; }
+		public RuleCall getFromEntityIDTerminalRuleCall_1_3_0_1() { return cFromEntityIDTerminalRuleCall_1_3_0_1; }
 		
 		//('has' | 'have')
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		public Alternatives getAlternatives_1_4() { return cAlternatives_1_4; }
 		
 		//'has'
-		public Keyword getHasKeyword_3_0() { return cHasKeyword_3_0; }
+		public Keyword getHasKeyword_1_4_0() { return cHasKeyword_1_4_0; }
 		
 		//'have'
-		public Keyword getHaveKeyword_3_1() { return cHaveKeyword_3_1; }
+		public Keyword getHaveKeyword_1_4_1() { return cHaveKeyword_1_4_1; }
 		
-		//('a' | 'many')*
-		public Alternatives getAlternatives_4() { return cAlternatives_4; }
+		//('a' |manyTo?='many')?
+		public Alternatives getAlternatives_1_5() { return cAlternatives_1_5; }
 		
 		//'a'
-		public Keyword getAKeyword_4_0() { return cAKeyword_4_0; }
+		public Keyword getAKeyword_1_5_0() { return cAKeyword_1_5_0; }
+		
+		//manyTo?='many'
+		public Assignment getManyToAssignment_1_5_1() { return cManyToAssignment_1_5_1; }
 		
 		//'many'
-		public Keyword getManyKeyword_4_1() { return cManyKeyword_4_1; }
+		public Keyword getManyToManyKeyword_1_5_1_0() { return cManyToManyKeyword_1_5_1_0; }
 		
-		//to=ID
-		public Assignment getToAssignment_5() { return cToAssignment_5; }
+		//to=[Entity]
+		public Assignment getToAssignment_1_6() { return cToAssignment_1_6; }
+		
+		//[Entity]
+		public CrossReference getToEntityCrossReference_1_6_0() { return cToEntityCrossReference_1_6_0; }
 		
 		//ID
-		public RuleCall getToIDTerminalRuleCall_5_0() { return cToIDTerminalRuleCall_5_0; }
+		public RuleCall getToEntityIDTerminalRuleCall_1_6_0_1() { return cToEntityIDTerminalRuleCall_1_6_0_1; }
 	}
 	
 	
 	private final EntityRootElements pEntityRoot;
 	private final EntityElements pEntity;
+	private final RequireElements pRequire;
 	private final AttributeElements pAttribute;
 	private final TypeElements pType;
 	private final RelationElements pRelation;
-	private final InheritanceElements pInheritance;
-	private final AssociationElements pAssociation;
 	
 	private final Grammar grammar;
 	
@@ -305,11 +356,10 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 		this.gaTerminals = gaTerminals;
 		this.pEntityRoot = new EntityRootElements();
 		this.pEntity = new EntityElements();
+		this.pRequire = new RequireElements();
 		this.pAttribute = new AttributeElements();
 		this.pType = new TypeElements();
 		this.pRelation = new RelationElements();
-		this.pInheritance = new InheritanceElements();
-		this.pAssociation = new AssociationElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -350,13 +400,23 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 	}
 	
 	//Entity:
-	//    'entity' name=ID attributes+=Attribute*;
+	//    'entity' name=ID (attributes+=Attribute | requires+=Require)*;
 	public EntityElements getEntityAccess() {
 		return pEntity;
 	}
 	
 	public ParserRule getEntityRule() {
 		return getEntityAccess().getRule();
+	}
+	
+	//Require:
+	//    'require' left=[Attribute] '=>' right=INT;
+	public RequireElements getRequireAccess() {
+		return pRequire;
+	}
+	
+	public ParserRule getRequireRule() {
+		return getRequireAccess().getRule();
 	}
 	
 	//Attribute:
@@ -380,33 +440,14 @@ public class MyDslGrammarAccess extends AbstractElementFinder.AbstractGrammarEle
 	}
 	
 	//Relation:
-	//    {Relation} relations+=(Inheritance | Association)*;
+	//    {Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity] |
+	//    {Association} 'relation' ('a' |manyFrom?='many')? from=[Entity] ('has' | 'have') ('a' |manyTo?='many')? to=[Entity];
 	public RelationElements getRelationAccess() {
 		return pRelation;
 	}
 	
 	public ParserRule getRelationRule() {
 		return getRelationAccess().getRule();
-	}
-	
-	//Inheritance:
-	//    'relation' from=ID 'is' to=ID;
-	public InheritanceElements getInheritanceAccess() {
-		return pInheritance;
-	}
-	
-	public ParserRule getInheritanceRule() {
-		return getInheritanceAccess().getRule();
-	}
-	
-	//Association:
-	//    'relation' ('a' | 'many')* from=ID ('has' | 'have') ('a' | 'many')* to=ID;
-	public AssociationElements getAssociationAccess() {
-		return pAssociation;
-	}
-	
-	public ParserRule getAssociationRule() {
-		return getAssociationAccess().getRule();
 	}
 	
 	//terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;

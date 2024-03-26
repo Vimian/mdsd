@@ -42,6 +42,15 @@ public interface MyDslFactory extends EFactory
   Entity createEntity();
 
   /**
+   * Returns a new object of class '<em>Require</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Require</em>'.
+   * @generated
+   */
+  Require createRequire();
+
+  /**
    * Returns a new object of class '<em>Attribute</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

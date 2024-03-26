@@ -6,11 +6,12 @@ package org.xtext.example.mydsl.myDsl.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.xtext.example.mydsl.myDsl.Association;
+import org.xtext.example.mydsl.myDsl.Entity;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
 /**
@@ -21,53 +22,75 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.AssociationImpl#isManyFrom <em>Many From</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.impl.AssociationImpl#getFrom <em>From</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.AssociationImpl#isManyTo <em>Many To</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.impl.AssociationImpl#getTo <em>To</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AssociationImpl extends MinimalEObjectImpl.Container implements Association
+public class AssociationImpl extends RelationImpl implements Association
 {
   /**
-   * The default value of the '{@link #getFrom() <em>From</em>}' attribute.
+   * The default value of the '{@link #isManyFrom() <em>Many From</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isManyFrom()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean MANY_FROM_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isManyFrom() <em>Many From</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isManyFrom()
+   * @generated
+   * @ordered
+   */
+  protected boolean manyFrom = MANY_FROM_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getFrom() <em>From</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFrom()
    * @generated
    * @ordered
    */
-  protected static final String FROM_EDEFAULT = null;
+  protected Entity from;
 
   /**
-   * The cached value of the '{@link #getFrom() <em>From</em>}' attribute.
+   * The default value of the '{@link #isManyTo() <em>Many To</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFrom()
+   * @see #isManyTo()
    * @generated
    * @ordered
    */
-  protected String from = FROM_EDEFAULT;
+  protected static final boolean MANY_TO_EDEFAULT = false;
 
   /**
-   * The default value of the '{@link #getTo() <em>To</em>}' attribute.
+   * The cached value of the '{@link #isManyTo() <em>Many To</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isManyTo()
+   * @generated
+   * @ordered
+   */
+  protected boolean manyTo = MANY_TO_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getTo() <em>To</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTo()
    * @generated
    * @ordered
    */
-  protected static final String TO_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getTo() <em>To</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTo()
-   * @generated
-   * @ordered
-   */
-  protected String to = TO_EDEFAULT;
+  protected Entity to;
 
   /**
    * <!-- begin-user-doc -->
@@ -96,7 +119,52 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
    * @generated
    */
   @Override
-  public String getFrom()
+  public boolean isManyFrom()
+  {
+    return manyFrom;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setManyFrom(boolean newManyFrom)
+  {
+    boolean oldManyFrom = manyFrom;
+    manyFrom = newManyFrom;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.ASSOCIATION__MANY_FROM, oldManyFrom, manyFrom));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Entity getFrom()
+  {
+    if (from != null && from.eIsProxy())
+    {
+      InternalEObject oldFrom = (InternalEObject)from;
+      from = (Entity)eResolveProxy(oldFrom);
+      if (from != oldFrom)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MyDslPackage.ASSOCIATION__FROM, oldFrom, from));
+      }
+    }
+    return from;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Entity basicGetFrom()
   {
     return from;
   }
@@ -107,9 +175,9 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
    * @generated
    */
   @Override
-  public void setFrom(String newFrom)
+  public void setFrom(Entity newFrom)
   {
-    String oldFrom = from;
+    Entity oldFrom = from;
     from = newFrom;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.ASSOCIATION__FROM, oldFrom, from));
@@ -121,7 +189,52 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
    * @generated
    */
   @Override
-  public String getTo()
+  public boolean isManyTo()
+  {
+    return manyTo;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setManyTo(boolean newManyTo)
+  {
+    boolean oldManyTo = manyTo;
+    manyTo = newManyTo;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.ASSOCIATION__MANY_TO, oldManyTo, manyTo));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Entity getTo()
+  {
+    if (to != null && to.eIsProxy())
+    {
+      InternalEObject oldTo = (InternalEObject)to;
+      to = (Entity)eResolveProxy(oldTo);
+      if (to != oldTo)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MyDslPackage.ASSOCIATION__TO, oldTo, to));
+      }
+    }
+    return to;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Entity basicGetTo()
   {
     return to;
   }
@@ -132,9 +245,9 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
    * @generated
    */
   @Override
-  public void setTo(String newTo)
+  public void setTo(Entity newTo)
   {
-    String oldTo = to;
+    Entity oldTo = to;
     to = newTo;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.ASSOCIATION__TO, oldTo, to));
@@ -150,10 +263,16 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
   {
     switch (featureID)
     {
+      case MyDslPackage.ASSOCIATION__MANY_FROM:
+        return isManyFrom();
       case MyDslPackage.ASSOCIATION__FROM:
-        return getFrom();
+        if (resolve) return getFrom();
+        return basicGetFrom();
+      case MyDslPackage.ASSOCIATION__MANY_TO:
+        return isManyTo();
       case MyDslPackage.ASSOCIATION__TO:
-        return getTo();
+        if (resolve) return getTo();
+        return basicGetTo();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -168,11 +287,17 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
   {
     switch (featureID)
     {
+      case MyDslPackage.ASSOCIATION__MANY_FROM:
+        setManyFrom((Boolean)newValue);
+        return;
       case MyDslPackage.ASSOCIATION__FROM:
-        setFrom((String)newValue);
+        setFrom((Entity)newValue);
+        return;
+      case MyDslPackage.ASSOCIATION__MANY_TO:
+        setManyTo((Boolean)newValue);
         return;
       case MyDslPackage.ASSOCIATION__TO:
-        setTo((String)newValue);
+        setTo((Entity)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -188,11 +313,17 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
   {
     switch (featureID)
     {
+      case MyDslPackage.ASSOCIATION__MANY_FROM:
+        setManyFrom(MANY_FROM_EDEFAULT);
+        return;
       case MyDslPackage.ASSOCIATION__FROM:
-        setFrom(FROM_EDEFAULT);
+        setFrom((Entity)null);
+        return;
+      case MyDslPackage.ASSOCIATION__MANY_TO:
+        setManyTo(MANY_TO_EDEFAULT);
         return;
       case MyDslPackage.ASSOCIATION__TO:
-        setTo(TO_EDEFAULT);
+        setTo((Entity)null);
         return;
     }
     super.eUnset(featureID);
@@ -208,10 +339,14 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
   {
     switch (featureID)
     {
+      case MyDslPackage.ASSOCIATION__MANY_FROM:
+        return manyFrom != MANY_FROM_EDEFAULT;
       case MyDslPackage.ASSOCIATION__FROM:
-        return FROM_EDEFAULT == null ? from != null : !FROM_EDEFAULT.equals(from);
+        return from != null;
+      case MyDslPackage.ASSOCIATION__MANY_TO:
+        return manyTo != MANY_TO_EDEFAULT;
       case MyDslPackage.ASSOCIATION__TO:
-        return TO_EDEFAULT == null ? to != null : !TO_EDEFAULT.equals(to);
+        return to != null;
     }
     return super.eIsSet(featureID);
   }
@@ -227,10 +362,10 @@ public class AssociationImpl extends MinimalEObjectImpl.Container implements Ass
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (from: ");
-    result.append(from);
-    result.append(", to: ");
-    result.append(to);
+    result.append(" (manyFrom: ");
+    result.append(manyFrom);
+    result.append(", manyTo: ");
+    result.append(manyTo);
     result.append(')');
     return result.toString();
   }

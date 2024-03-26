@@ -3,7 +3,6 @@
  */
 package org.xtext.example.mydsl.myDsl;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,58 +13,58 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.myDsl.Inheritance#getFrom <em>From</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.myDsl.Inheritance#getTo <em>To</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.Inheritance#getBaseEntity <em>Base Entity</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.Inheritance#getSuperEntity <em>Super Entity</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getInheritance()
  * @model
  * @generated
  */
-public interface Inheritance extends EObject
+public interface Inheritance extends Relation
 {
   /**
-   * Returns the value of the '<em><b>From</b></em>' attribute.
+   * Returns the value of the '<em><b>Base Entity</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>From</em>' attribute.
-   * @see #setFrom(String)
-   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getInheritance_From()
+   * @return the value of the '<em>Base Entity</em>' reference.
+   * @see #setBaseEntity(Entity)
+   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getInheritance_BaseEntity()
    * @model
    * @generated
    */
-  String getFrom();
+  Entity getBaseEntity();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Inheritance#getFrom <em>From</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Inheritance#getBaseEntity <em>Base Entity</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>From</em>' attribute.
-   * @see #getFrom()
+   * @param value the new value of the '<em>Base Entity</em>' reference.
+   * @see #getBaseEntity()
    * @generated
    */
-  void setFrom(String value);
+  void setBaseEntity(Entity value);
 
   /**
-   * Returns the value of the '<em><b>To</b></em>' attribute.
+   * Returns the value of the '<em><b>Super Entity</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>To</em>' attribute.
-   * @see #setTo(String)
-   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getInheritance_To()
+   * @return the value of the '<em>Super Entity</em>' reference.
+   * @see #setSuperEntity(Entity)
+   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getInheritance_SuperEntity()
    * @model
    * @generated
    */
-  String getTo();
+  Entity getSuperEntity();
 
   /**
-   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Inheritance#getTo <em>To</em>}' attribute.
+   * Sets the value of the '{@link org.xtext.example.mydsl.myDsl.Inheritance#getSuperEntity <em>Super Entity</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>To</em>' attribute.
-   * @see #getTo()
+   * @param value the new value of the '<em>Super Entity</em>' reference.
+   * @see #getSuperEntity()
    * @generated
    */
-  void setTo(String value);
+  void setSuperEntity(Entity value);
 
 } // Inheritance

@@ -182,23 +182,103 @@ ruleEntity returns [EObject current=null]
 		)
 		(
 			(
-				{
-					newCompositeNode(grammarAccess.getEntityAccess().getAttributesAttributeParserRuleCall_2_0());
-				}
-				lv_attributes_2_0=ruleAttribute
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getEntityRule());
+				(
+					{
+						newCompositeNode(grammarAccess.getEntityAccess().getAttributesAttributeParserRuleCall_2_0_0());
 					}
-					add(
-						$current,
-						"attributes",
-						lv_attributes_2_0,
-						"org.xtext.example.mydsl.MyDsl.Attribute");
-					afterParserOrEnumRuleCall();
-				}
+					lv_attributes_2_0=ruleAttribute
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getEntityRule());
+						}
+						add(
+							$current,
+							"attributes",
+							lv_attributes_2_0,
+							"org.xtext.example.mydsl.MyDsl.Attribute");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			    |
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getEntityAccess().getRequiresRequireParserRuleCall_2_1_0());
+					}
+					lv_requires_3_0=ruleRequire
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getEntityRule());
+						}
+						add(
+							$current,
+							"requires",
+							lv_requires_3_0,
+							"org.xtext.example.mydsl.MyDsl.Require");
+						afterParserOrEnumRuleCall();
+					}
+				)
 			)
 		)*
+	)
+;
+
+// Entry rule entryRuleRequire
+entryRuleRequire returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getRequireRule()); }
+	iv_ruleRequire=ruleRequire
+	{ $current=$iv_ruleRequire.current; }
+	EOF;
+
+// Rule Require
+ruleRequire returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='require'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getRequireAccess().getRequireKeyword_0());
+		}
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getRequireRule());
+					}
+				}
+				otherlv_1=RULE_ID
+				{
+					newLeafNode(otherlv_1, grammarAccess.getRequireAccess().getLeftAttributeCrossReference_1_0());
+				}
+			)
+		)
+		otherlv_2='=>'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getRequireAccess().getEqualsSignGreaterThanSignKeyword_2());
+		}
+		(
+			(
+				lv_right_3_0=RULE_INT
+				{
+					newLeafNode(lv_right_3_0, grammarAccess.getRequireAccess().getRightINTTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getRequireRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"right",
+						lv_right_3_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
 	)
 ;
 
@@ -313,202 +393,139 @@ ruleRelation returns [EObject current=null]
 }:
 	(
 		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getRelationAccess().getInheritanceAction_0_0(),
+						$current);
+				}
+			)
+			otherlv_1='relation'
 			{
-				$current = forceCreateModelElement(
-					grammarAccess.getRelationAccess().getRelationAction_0(),
-					$current);
+				newLeafNode(otherlv_1, grammarAccess.getRelationAccess().getRelationKeyword_0_1());
 			}
-		)
-		(
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getRelationAccess().getRelationsInheritanceParserRuleCall_1_0_0());
-					}
-					lv_relations_1_1=ruleInheritance
-					{
 						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getRelationRule());
+							$current = createModelElement(grammarAccess.getRelationRule());
 						}
-						add(
-							$current,
-							"relations",
-							lv_relations_1_1,
-							"org.xtext.example.mydsl.MyDsl.Inheritance");
-						afterParserOrEnumRuleCall();
 					}
-					    |
+					otherlv_2=RULE_ID
 					{
-						newCompositeNode(grammarAccess.getRelationAccess().getRelationsAssociationParserRuleCall_1_0_1());
-					}
-					lv_relations_1_2=ruleAssociation
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getRelationRule());
-						}
-						add(
-							$current,
-							"relations",
-							lv_relations_1_2,
-							"org.xtext.example.mydsl.MyDsl.Association");
-						afterParserOrEnumRuleCall();
+						newLeafNode(otherlv_2, grammarAccess.getRelationAccess().getBaseEntityEntityCrossReference_0_2_0());
 					}
 				)
 			)
-		)*
-	)
-;
-
-// Entry rule entryRuleInheritance
-entryRuleInheritance returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getInheritanceRule()); }
-	iv_ruleInheritance=ruleInheritance
-	{ $current=$iv_ruleInheritance.current; }
-	EOF;
-
-// Rule Inheritance
-ruleInheritance returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		otherlv_0='relation'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getInheritanceAccess().getRelationKeyword_0());
-		}
-		(
+			otherlv_3='is'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getRelationAccess().getIsKeyword_0_3());
+			}
 			(
-				lv_from_1_0=RULE_ID
-				{
-					newLeafNode(lv_from_1_0, grammarAccess.getInheritanceAccess().getFromIDTerminalRuleCall_1_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getInheritanceRule());
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getRelationRule());
+						}
 					}
-					setWithLastConsumed(
-						$current,
-						"from",
-						lv_from_1_0,
-						"org.eclipse.xtext.common.Terminals.ID");
-				}
+					otherlv_4=RULE_ID
+					{
+						newLeafNode(otherlv_4, grammarAccess.getRelationAccess().getSuperEntityEntityCrossReference_0_4_0());
+					}
+				)
 			)
 		)
-		otherlv_2='is'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getInheritanceAccess().getIsKeyword_2());
-		}
+		    |
 		(
 			(
-				lv_to_3_0=RULE_ID
 				{
-					newLeafNode(lv_to_3_0, grammarAccess.getInheritanceAccess().getToIDTerminalRuleCall_3_0());
-				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getInheritanceRule());
-					}
-					setWithLastConsumed(
-						$current,
-						"to",
-						lv_to_3_0,
-						"org.eclipse.xtext.common.Terminals.ID");
+					$current = forceCreateModelElement(
+						grammarAccess.getRelationAccess().getAssociationAction_1_0(),
+						$current);
 				}
 			)
-		)
-	)
-;
-
-// Entry rule entryRuleAssociation
-entryRuleAssociation returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getAssociationRule()); }
-	iv_ruleAssociation=ruleAssociation
-	{ $current=$iv_ruleAssociation.current; }
-	EOF;
-
-// Rule Association
-ruleAssociation returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		otherlv_0='relation'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getAssociationAccess().getRelationKeyword_0());
-		}
-		(
-			otherlv_1='a'
+			otherlv_6='relation'
 			{
-				newLeafNode(otherlv_1, grammarAccess.getAssociationAccess().getAKeyword_1_0());
+				newLeafNode(otherlv_6, grammarAccess.getRelationAccess().getRelationKeyword_1_1());
 			}
-			    |
-			otherlv_2='many'
-			{
-				newLeafNode(otherlv_2, grammarAccess.getAssociationAccess().getManyKeyword_1_1());
-			}
-		)*
-		(
 			(
-				lv_from_3_0=RULE_ID
+				otherlv_7='a'
 				{
-					newLeafNode(lv_from_3_0, grammarAccess.getAssociationAccess().getFromIDTerminalRuleCall_2_0());
+					newLeafNode(otherlv_7, grammarAccess.getRelationAccess().getAKeyword_1_2_0());
 				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getAssociationRule());
+				    |
+				(
+					(
+						lv_manyFrom_8_0='many'
+						{
+							newLeafNode(lv_manyFrom_8_0, grammarAccess.getRelationAccess().getManyFromManyKeyword_1_2_1_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getRelationRule());
+							}
+							setWithLastConsumed($current, "manyFrom", lv_manyFrom_8_0 != null, "many");
+						}
+					)
+				)
+			)?
+			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getRelationRule());
+						}
 					}
-					setWithLastConsumed(
-						$current,
-						"from",
-						lv_from_3_0,
-						"org.eclipse.xtext.common.Terminals.ID");
+					otherlv_9=RULE_ID
+					{
+						newLeafNode(otherlv_9, grammarAccess.getRelationAccess().getFromEntityCrossReference_1_3_0());
+					}
+				)
+			)
+			(
+				otherlv_10='has'
+				{
+					newLeafNode(otherlv_10, grammarAccess.getRelationAccess().getHasKeyword_1_4_0());
+				}
+				    |
+				otherlv_11='have'
+				{
+					newLeafNode(otherlv_11, grammarAccess.getRelationAccess().getHaveKeyword_1_4_1());
 				}
 			)
-		)
-		(
-			otherlv_4='has'
-			{
-				newLeafNode(otherlv_4, grammarAccess.getAssociationAccess().getHasKeyword_3_0());
-			}
-			    |
-			otherlv_5='have'
-			{
-				newLeafNode(otherlv_5, grammarAccess.getAssociationAccess().getHaveKeyword_3_1());
-			}
-		)
-		(
-			otherlv_6='a'
-			{
-				newLeafNode(otherlv_6, grammarAccess.getAssociationAccess().getAKeyword_4_0());
-			}
-			    |
-			otherlv_7='many'
-			{
-				newLeafNode(otherlv_7, grammarAccess.getAssociationAccess().getManyKeyword_4_1());
-			}
-		)*
-		(
 			(
-				lv_to_8_0=RULE_ID
+				otherlv_12='a'
 				{
-					newLeafNode(lv_to_8_0, grammarAccess.getAssociationAccess().getToIDTerminalRuleCall_5_0());
+					newLeafNode(otherlv_12, grammarAccess.getRelationAccess().getAKeyword_1_5_0());
 				}
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getAssociationRule());
+				    |
+				(
+					(
+						lv_manyTo_13_0='many'
+						{
+							newLeafNode(lv_manyTo_13_0, grammarAccess.getRelationAccess().getManyToManyKeyword_1_5_1_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getRelationRule());
+							}
+							setWithLastConsumed($current, "manyTo", lv_manyTo_13_0 != null, "many");
+						}
+					)
+				)
+			)?
+			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getRelationRule());
+						}
 					}
-					setWithLastConsumed(
-						$current,
-						"to",
-						lv_to_8_0,
-						"org.eclipse.xtext.common.Terminals.ID");
-				}
+					otherlv_14=RULE_ID
+					{
+						newLeafNode(otherlv_14, grammarAccess.getRelationAccess().getToEntityCrossReference_1_6_0());
+					}
+				)
 			)
 		)
 	)

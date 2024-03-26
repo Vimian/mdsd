@@ -6,10 +6,11 @@ package org.xtext.example.mydsl.myDsl.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.xtext.example.mydsl.myDsl.Entity;
 import org.xtext.example.mydsl.myDsl.Inheritance;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 
@@ -21,53 +22,33 @@ import org.xtext.example.mydsl.myDsl.MyDslPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.xtext.example.mydsl.myDsl.impl.InheritanceImpl#getFrom <em>From</em>}</li>
- *   <li>{@link org.xtext.example.mydsl.myDsl.impl.InheritanceImpl#getTo <em>To</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.InheritanceImpl#getBaseEntity <em>Base Entity</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.impl.InheritanceImpl#getSuperEntity <em>Super Entity</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inheritance
+public class InheritanceImpl extends RelationImpl implements Inheritance
 {
   /**
-   * The default value of the '{@link #getFrom() <em>From</em>}' attribute.
+   * The cached value of the '{@link #getBaseEntity() <em>Base Entity</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFrom()
+   * @see #getBaseEntity()
    * @generated
    * @ordered
    */
-  protected static final String FROM_EDEFAULT = null;
+  protected Entity baseEntity;
 
   /**
-   * The cached value of the '{@link #getFrom() <em>From</em>}' attribute.
+   * The cached value of the '{@link #getSuperEntity() <em>Super Entity</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFrom()
+   * @see #getSuperEntity()
    * @generated
    * @ordered
    */
-  protected String from = FROM_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getTo() <em>To</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTo()
-   * @generated
-   * @ordered
-   */
-  protected static final String TO_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getTo() <em>To</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTo()
-   * @generated
-   * @ordered
-   */
-  protected String to = TO_EDEFAULT;
+  protected Entity superEntity;
 
   /**
    * <!-- begin-user-doc -->
@@ -96,9 +77,29 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
    * @generated
    */
   @Override
-  public String getFrom()
+  public Entity getBaseEntity()
   {
-    return from;
+    if (baseEntity != null && baseEntity.eIsProxy())
+    {
+      InternalEObject oldBaseEntity = (InternalEObject)baseEntity;
+      baseEntity = (Entity)eResolveProxy(oldBaseEntity);
+      if (baseEntity != oldBaseEntity)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MyDslPackage.INHERITANCE__BASE_ENTITY, oldBaseEntity, baseEntity));
+      }
+    }
+    return baseEntity;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Entity basicGetBaseEntity()
+  {
+    return baseEntity;
   }
 
   /**
@@ -107,12 +108,12 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
    * @generated
    */
   @Override
-  public void setFrom(String newFrom)
+  public void setBaseEntity(Entity newBaseEntity)
   {
-    String oldFrom = from;
-    from = newFrom;
+    Entity oldBaseEntity = baseEntity;
+    baseEntity = newBaseEntity;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.INHERITANCE__FROM, oldFrom, from));
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.INHERITANCE__BASE_ENTITY, oldBaseEntity, baseEntity));
   }
 
   /**
@@ -121,9 +122,29 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
    * @generated
    */
   @Override
-  public String getTo()
+  public Entity getSuperEntity()
   {
-    return to;
+    if (superEntity != null && superEntity.eIsProxy())
+    {
+      InternalEObject oldSuperEntity = (InternalEObject)superEntity;
+      superEntity = (Entity)eResolveProxy(oldSuperEntity);
+      if (superEntity != oldSuperEntity)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MyDslPackage.INHERITANCE__SUPER_ENTITY, oldSuperEntity, superEntity));
+      }
+    }
+    return superEntity;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Entity basicGetSuperEntity()
+  {
+    return superEntity;
   }
 
   /**
@@ -132,12 +153,12 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
    * @generated
    */
   @Override
-  public void setTo(String newTo)
+  public void setSuperEntity(Entity newSuperEntity)
   {
-    String oldTo = to;
-    to = newTo;
+    Entity oldSuperEntity = superEntity;
+    superEntity = newSuperEntity;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.INHERITANCE__TO, oldTo, to));
+      eNotify(new ENotificationImpl(this, Notification.SET, MyDslPackage.INHERITANCE__SUPER_ENTITY, oldSuperEntity, superEntity));
   }
 
   /**
@@ -150,10 +171,12 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
   {
     switch (featureID)
     {
-      case MyDslPackage.INHERITANCE__FROM:
-        return getFrom();
-      case MyDslPackage.INHERITANCE__TO:
-        return getTo();
+      case MyDslPackage.INHERITANCE__BASE_ENTITY:
+        if (resolve) return getBaseEntity();
+        return basicGetBaseEntity();
+      case MyDslPackage.INHERITANCE__SUPER_ENTITY:
+        if (resolve) return getSuperEntity();
+        return basicGetSuperEntity();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -168,11 +191,11 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
   {
     switch (featureID)
     {
-      case MyDslPackage.INHERITANCE__FROM:
-        setFrom((String)newValue);
+      case MyDslPackage.INHERITANCE__BASE_ENTITY:
+        setBaseEntity((Entity)newValue);
         return;
-      case MyDslPackage.INHERITANCE__TO:
-        setTo((String)newValue);
+      case MyDslPackage.INHERITANCE__SUPER_ENTITY:
+        setSuperEntity((Entity)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -188,11 +211,11 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
   {
     switch (featureID)
     {
-      case MyDslPackage.INHERITANCE__FROM:
-        setFrom(FROM_EDEFAULT);
+      case MyDslPackage.INHERITANCE__BASE_ENTITY:
+        setBaseEntity((Entity)null);
         return;
-      case MyDslPackage.INHERITANCE__TO:
-        setTo(TO_EDEFAULT);
+      case MyDslPackage.INHERITANCE__SUPER_ENTITY:
+        setSuperEntity((Entity)null);
         return;
     }
     super.eUnset(featureID);
@@ -208,31 +231,12 @@ public class InheritanceImpl extends MinimalEObjectImpl.Container implements Inh
   {
     switch (featureID)
     {
-      case MyDslPackage.INHERITANCE__FROM:
-        return FROM_EDEFAULT == null ? from != null : !FROM_EDEFAULT.equals(from);
-      case MyDslPackage.INHERITANCE__TO:
-        return TO_EDEFAULT == null ? to != null : !TO_EDEFAULT.equals(to);
+      case MyDslPackage.INHERITANCE__BASE_ENTITY:
+        return baseEntity != null;
+      case MyDslPackage.INHERITANCE__SUPER_ENTITY:
+        return superEntity != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (from: ");
-    result.append(from);
-    result.append(", to: ");
-    result.append(to);
-    result.append(')');
-    return result.toString();
   }
 
 } //InheritanceImpl

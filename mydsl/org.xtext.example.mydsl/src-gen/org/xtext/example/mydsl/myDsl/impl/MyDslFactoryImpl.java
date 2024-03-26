@@ -67,6 +67,7 @@ public class MyDslFactoryImpl extends EFactoryImpl implements MyDslFactory
     {
       case MyDslPackage.ENTITY_ROOT: return createEntityRoot();
       case MyDslPackage.ENTITY: return createEntity();
+      case MyDslPackage.REQUIRE: return createRequire();
       case MyDslPackage.ATTRIBUTE: return createAttribute();
       case MyDslPackage.RELATION: return createRelation();
       case MyDslPackage.INHERITANCE: return createInheritance();
@@ -98,6 +99,18 @@ public class MyDslFactoryImpl extends EFactoryImpl implements MyDslFactory
   {
     EntityImpl entity = new EntityImpl();
     return entity;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Require createRequire()
+  {
+    RequireImpl require = new RequireImpl();
+    return require;
   }
 
   /**

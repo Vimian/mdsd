@@ -86,6 +86,11 @@ public class MyDslAdapterFactory extends AdapterFactoryImpl
         return createEntityAdapter();
       }
       @Override
+      public Adapter caseRequire(Require object)
+      {
+        return createRequireAdapter();
+      }
+      @Override
       public Adapter caseAttribute(Attribute object)
       {
         return createAttributeAdapter();
@@ -153,6 +158,21 @@ public class MyDslAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createEntityAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.xtext.example.mydsl.myDsl.Require <em>Require</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.xtext.example.mydsl.myDsl.Require
+   * @generated
+   */
+  public Adapter createRequireAdapter()
   {
     return null;
   }

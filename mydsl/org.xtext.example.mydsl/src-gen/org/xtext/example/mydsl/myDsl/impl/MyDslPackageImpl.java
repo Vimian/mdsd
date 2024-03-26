@@ -18,6 +18,7 @@ import org.xtext.example.mydsl.myDsl.Inheritance;
 import org.xtext.example.mydsl.myDsl.MyDslFactory;
 import org.xtext.example.mydsl.myDsl.MyDslPackage;
 import org.xtext.example.mydsl.myDsl.Relation;
+import org.xtext.example.mydsl.myDsl.Require;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,6 +41,13 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   private EClass entityEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass requireEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -214,6 +222,50 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
+  public EReference getEntity_Requires()
+  {
+    return (EReference)entityEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getRequire()
+  {
+    return requireEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRequire_Left()
+  {
+    return (EReference)requireEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getRequire_Right()
+  {
+    return (EAttribute)requireEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getAttribute()
   {
     return attributeEClass;
@@ -258,17 +310,6 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EReference getRelation_Relations()
-  {
-    return (EReference)relationEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getInheritance()
   {
     return inheritanceEClass;
@@ -280,9 +321,9 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getInheritance_From()
+  public EReference getInheritance_BaseEntity()
   {
-    return (EAttribute)inheritanceEClass.getEStructuralFeatures().get(0);
+    return (EReference)inheritanceEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -291,9 +332,9 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getInheritance_To()
+  public EReference getInheritance_SuperEntity()
   {
-    return (EAttribute)inheritanceEClass.getEStructuralFeatures().get(1);
+    return (EReference)inheritanceEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -313,7 +354,7 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getAssociation_From()
+  public EAttribute getAssociation_ManyFrom()
   {
     return (EAttribute)associationEClass.getEStructuralFeatures().get(0);
   }
@@ -324,9 +365,31 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
    * @generated
    */
   @Override
-  public EAttribute getAssociation_To()
+  public EReference getAssociation_From()
   {
-    return (EAttribute)associationEClass.getEStructuralFeatures().get(1);
+    return (EReference)associationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getAssociation_ManyTo()
+  {
+    return (EAttribute)associationEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getAssociation_To()
+  {
+    return (EReference)associationEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -368,21 +431,27 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
     entityEClass = createEClass(ENTITY);
     createEAttribute(entityEClass, ENTITY__NAME);
     createEReference(entityEClass, ENTITY__ATTRIBUTES);
+    createEReference(entityEClass, ENTITY__REQUIRES);
+
+    requireEClass = createEClass(REQUIRE);
+    createEReference(requireEClass, REQUIRE__LEFT);
+    createEAttribute(requireEClass, REQUIRE__RIGHT);
 
     attributeEClass = createEClass(ATTRIBUTE);
     createEAttribute(attributeEClass, ATTRIBUTE__NAME);
     createEAttribute(attributeEClass, ATTRIBUTE__TYPE);
 
     relationEClass = createEClass(RELATION);
-    createEReference(relationEClass, RELATION__RELATIONS);
 
     inheritanceEClass = createEClass(INHERITANCE);
-    createEAttribute(inheritanceEClass, INHERITANCE__FROM);
-    createEAttribute(inheritanceEClass, INHERITANCE__TO);
+    createEReference(inheritanceEClass, INHERITANCE__BASE_ENTITY);
+    createEReference(inheritanceEClass, INHERITANCE__SUPER_ENTITY);
 
     associationEClass = createEClass(ASSOCIATION);
-    createEAttribute(associationEClass, ASSOCIATION__FROM);
-    createEAttribute(associationEClass, ASSOCIATION__TO);
+    createEAttribute(associationEClass, ASSOCIATION__MANY_FROM);
+    createEReference(associationEClass, ASSOCIATION__FROM);
+    createEAttribute(associationEClass, ASSOCIATION__MANY_TO);
+    createEReference(associationEClass, ASSOCIATION__TO);
   }
 
   /**
@@ -414,6 +483,8 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    inheritanceEClass.getESuperTypes().add(this.getRelation());
+    associationEClass.getESuperTypes().add(this.getRelation());
 
     // Initialize classes and features; add operations and parameters
     initEClass(entityRootEClass, EntityRoot.class, "EntityRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -424,21 +495,27 @@ public class MyDslPackageImpl extends EPackageImpl implements MyDslPackage
     initEClass(entityEClass, Entity.class, "Entity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getEntity_Name(), ecorePackage.getEString(), "name", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEntity_Attributes(), this.getAttribute(), null, "attributes", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEntity_Requires(), this.getRequire(), null, "requires", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(requireEClass, Require.class, "Require", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRequire_Left(), this.getAttribute(), null, "left", null, 0, 1, Require.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRequire_Right(), ecorePackage.getEInt(), "right", null, 0, 1, Require.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(attributeEClass, Attribute.class, "Attribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttribute_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAttribute_Type(), ecorePackage.getEString(), "type", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(relationEClass, Relation.class, "Relation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRelation_Relations(), ecorePackage.getEObject(), null, "relations", null, 0, -1, Relation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(inheritanceEClass, Inheritance.class, "Inheritance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getInheritance_From(), ecorePackage.getEString(), "from", null, 0, 1, Inheritance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getInheritance_To(), ecorePackage.getEString(), "to", null, 0, 1, Inheritance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getInheritance_BaseEntity(), this.getEntity(), null, "baseEntity", null, 0, 1, Inheritance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getInheritance_SuperEntity(), this.getEntity(), null, "superEntity", null, 0, 1, Inheritance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(associationEClass, Association.class, "Association", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getAssociation_From(), ecorePackage.getEString(), "from", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_To(), ecorePackage.getEString(), "to", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAssociation_ManyFrom(), ecorePackage.getEBoolean(), "manyFrom", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssociation_From(), this.getEntity(), null, "from", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAssociation_ManyTo(), ecorePackage.getEBoolean(), "manyTo", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssociation_To(), this.getEntity(), null, "to", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

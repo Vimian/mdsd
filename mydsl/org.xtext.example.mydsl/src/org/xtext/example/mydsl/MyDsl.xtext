@@ -6,8 +6,11 @@ EntityRoot:
 	'system' name=ID (entities+=Entity | relations+=Relation)*;
 	
 Entity:
-	'entity' name=ID attributes+=Attribute*;
+	'entity' name=ID (attributes+=Attribute | requires+=Require)*;
 
+Require:
+	'require' left=[Attribute] '=>' right=INT;
+	
 Attribute:
 	'attribute' name=ID 'as' type=Type;
 	
@@ -15,10 +18,5 @@ Type:
 	'string' | 'number';
 
 Relation: 
-	{Relation} relations+=(Inheritance | Association)*;
-	
-Inheritance:
-	'relation' from=ID 'is' to=ID;
-
-Association: 
-	'relation' ('a' | 'many')* from=ID ('has' | 'have') ('a' | 'many')* to=ID;
+	{Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity] |
+	{Association} 'relation' ('a' |manyFrom?='many')? from=[Entity] ('has' | 'have') ('a' |manyTo?='many')? to=[Entity];

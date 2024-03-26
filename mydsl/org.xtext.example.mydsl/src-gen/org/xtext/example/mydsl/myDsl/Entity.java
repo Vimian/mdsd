@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.xtext.example.mydsl.myDsl.Entity#getName <em>Name</em>}</li>
  *   <li>{@link org.xtext.example.mydsl.myDsl.Entity#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.xtext.example.mydsl.myDsl.Entity#getRequires <em>Requires</em>}</li>
  * </ul>
  *
  * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getEntity()
@@ -59,5 +60,17 @@ public interface Entity extends EObject
    * @generated
    */
   EList<Attribute> getAttributes();
+
+  /**
+   * Returns the value of the '<em><b>Requires</b></em>' containment reference list.
+   * The list contents are of type {@link org.xtext.example.mydsl.myDsl.Require}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Requires</em>' containment reference list.
+   * @see org.xtext.example.mydsl.myDsl.MyDslPackage#getEntity_Requires()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Require> getRequires();
 
 } // Entity
