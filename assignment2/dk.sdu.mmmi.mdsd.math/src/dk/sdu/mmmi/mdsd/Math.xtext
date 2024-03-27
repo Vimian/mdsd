@@ -3,29 +3,47 @@ grammar dk.sdu.mmmi.mdsd.Math with org.eclipse.xtext.common.Terminals
 generate math "http://www.sdu.dk/mmmi/mdsd/Math"
 
 MathExp:
+	variables += Variable*
+;
+
+Variable:
 	'var' name=ID '=' exp=Exp
 ;
 
 Exp:
-	left=Number (operator=ExpOp right=Number)?
+	Factor ((
+		{Plus.left=current} '+' right=Factor |
+		{Minus.left=current} '-' right=Factor
+	))*
 ;
 
-ExpOp:
-	{Plus} '+' | {Minus} '-'	 | {Mult} '*' | {Div} '/'	
+Factor returns Exp:
+	Primary ((
+		{Multi.left=current} '*' right=Primary |
+		{Divi.left=current} '/' right=Primary
+	))*
 ;
 
 Primary:
-	Number | Parenthesis | VariableUse
+	MathNumber | Parenthesis | LetVariable | VariableUse
 ;
 
 Parenthesis:
 	'(' exp=Exp ')'
 ;
 
-Number:
+MathNumber:
 	value=INT
 ;
 
+LetVariable:
+	'let' name=ID '=' value=Exp 'in' exp=Exp 'end'
+;
+
+VariableType:
+	Variable | LetVariable
+;
+
 VariableUse:
-	ref = [MathExp]
+	ref = [VariableType]
 ;

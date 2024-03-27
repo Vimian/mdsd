@@ -3,13 +3,12 @@
  */
 package dk.sdu.mmmi.mdsd.generator
 
-import dk.sdu.mmmi.mdsd.math.Div
+import dk.sdu.mmmi.mdsd.math.Divi
 import dk.sdu.mmmi.mdsd.math.Exp
 import dk.sdu.mmmi.mdsd.math.MathExp
 import dk.sdu.mmmi.mdsd.math.Minus
-import dk.sdu.mmmi.mdsd.math.Mult
+import dk.sdu.mmmi.mdsd.math.Multi
 import dk.sdu.mmmi.mdsd.math.Plus
-import dk.sdu.mmmi.mdsd.math.Primary
 import java.util.HashMap
 import java.util.Map
 import javax.swing.JOptionPane
@@ -17,6 +16,11 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import dk.sdu.mmmi.mdsd.math.MathNumber
+import dk.sdu.mmmi.mdsd.math.Parenthesis
+import dk.sdu.mmmi.mdsd.math.Primary
+import dk.sdu.mmmi.mdsd.math.LetVariable
+import dk.sdu.mmmi.mdsd.math.VariableUse
 
 /**
  * Generates code from your model files on save.
@@ -26,9 +30,11 @@ import org.eclipse.xtext.generator.IGeneratorContext
 class MathGenerator extends AbstractGenerator {
 
 	static Map<String, Integer> variables = new HashMap();
+	static Map<String, Integer> letVariables = new HashMap();
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val math = resource.allContents.filter(MathExp).next
+		
 		val result = math.compute
 		
 		// You can replace with hovering, see Bettini Chapter 8
@@ -40,25 +46,88 @@ class MathGenerator extends AbstractGenerator {
 	// Note: written according to illegal left-recursive grammar, requires fix
 	//
 	
-	def static compute(MathExp math) { 
-		math.exp.computeExp
+	def static compute(MathExp math) {
+		for (var i = 0; i < math.variables.size; i++) {
+			letVariables = new HashMap()
+			
+			val result = math.variables.get(i).exp.computeExp
+		
+			variables.put(math.variables.get(i).name, result)
+		}
+		
 		return variables
 	}
 	
 	def static int computeExp(Exp exp) {
-		val left = exp.left.computePrim
-		switch exp.operator {
-			Plus: left+exp.right.computePrim
-			Minus: left-exp.right.computePrim
-			Mult: left*exp.right.computePrim
-			Div: left/exp.right.computePrim
-			default: left
+		// Handle primary expressions first
+		if (exp instanceof Primary) {
+			return exp.computePrim
 		}
+
+		if (exp instanceof Plus) {
+			return exp.computeExp
+		}
+		
+		if (exp instanceof Minus) {
+			return exp.computeExp
+		}
+		
+		if (exp instanceof Multi) {
+			return exp.computeExp
+		}
+		
+		if (exp instanceof Divi) {
+			return exp.computeExp
+		}
+		
+		return 0
 	}
 	
-	def static int computePrim(Primary factor) { 
-		87
+	def static int computeExp(Plus plus) {		
+		return plus.left.computeExp + plus.right.computeExp
 	}
+	
+	def static int computeExp(Minus minus) {		
+		return minus.left.computeExp - minus.right.computeExp
+	}
+	
+	def static int computeExp(Divi divi) {
+		return divi.left.computeExp / divi.right.computePrim
+	}
+	
+	def static int computeExp(Multi multi) {
+		return multi.left.computeExp * multi.right.computePrim
+	}
+	
+	def static int computePrim(Primary primary) {
+		if (primary instanceof MathNumber) {
+			return primary.value
+		} else if (primary instanceof Parenthesis) {
+			return primary.exp.computeExp
+		} else if (primary instanceof LetVariable) {
+			val initValue = primary.value.computeExp
+			val oldValue = letVariables.get(primary.name)
+			
+			letVariables.put(primary.name, initValue)
+			
+			val result = primary.exp.computeExp
+			
+			letVariables.put(primary.name, oldValue)
+			
+			return result
+		} else if (primary instanceof VariableUse) {
+			if (letVariables.containsKey(primary.ref.name)) {
+				return letVariables.get(primary.ref.name)
+			} else if (variables.containsKey(primary.ref.name)) {
+				return variables.get(primary.ref.name)
+			}
+			
+			return 0
+		}
+		return 0
+	}
+	
+	
 
 	def void displayPanel(Map<String, Integer> result) {
 		var resultString = ""

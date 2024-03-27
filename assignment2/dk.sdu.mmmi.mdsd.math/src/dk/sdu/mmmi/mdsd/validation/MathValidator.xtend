@@ -3,6 +3,11 @@
  */
 package dk.sdu.mmmi.mdsd.validation
 
+import org.eclipse.xtext.validation.Check
+import org.eclipse.xtext.EcoreUtil2
+import dk.sdu.mmmi.mdsd.math.Variable
+import dk.sdu.mmmi.mdsd.math.MathExp
+import dk.sdu.mmmi.mdsd.math.MathPackage
 
 /**
  * This class contains custom validation rules. 
@@ -22,4 +27,22 @@ class MathValidator extends AbstractMathValidator {
 //		}
 //	}
 	
+	@Check
+	def checkRepeatedGlobalVarDeclaration(Variable variable) {
+		val mathExp = EcoreUtil2.getContainerOfType(variable, MathExp)
+		val variables = mathExp.variables.filter(Variable)
+		var count = 0
+		for (var i = 0; i < variables.size; i++) {
+			val current = variables.get(i)
+			
+			if (variable.name == current.name) {
+				count++
+			}
+			
+			if (count > 1) {
+				error("Repeated", MathPackage.Literals.VARIABLE_TYPE__NAME)
+				return
+			}
+		}
+	}
 }

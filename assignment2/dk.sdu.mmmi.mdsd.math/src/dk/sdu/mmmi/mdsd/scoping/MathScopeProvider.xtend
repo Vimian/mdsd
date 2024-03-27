@@ -3,6 +3,23 @@
  */
 package dk.sdu.mmmi.mdsd.scoping
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.IScope
+import dk.sdu.mmmi.mdsd.math.Variable
+import java.util.HashMap
+import dk.sdu.mmmi.mdsd.math.VariableUse
+import org.eclipse.xtext.scoping.Scopes
+import dk.sdu.mmmi.mdsd.math.MathPackage
+import org.eclipse.xtext.EcoreUtil2
+import dk.sdu.mmmi.mdsd.math.LetVariable
+import dk.sdu.mmmi.mdsd.math.Plus
+import dk.sdu.mmmi.mdsd.math.VariableType
+import dk.sdu.mmmi.mdsd.math.MathExp
+import dk.sdu.mmmi.mdsd.math.Exp
+import dk.sdu.mmmi.mdsd.math.Minus
+import dk.sdu.mmmi.mdsd.math.Multi
+import dk.sdu.mmmi.mdsd.math.Divi
 
 /**
  * This class contains custom scoping description.
@@ -11,5 +28,58 @@ package dk.sdu.mmmi.mdsd.scoping
  * on how and when to use it.
  */
 class MathScopeProvider extends AbstractMathScopeProvider {
-
+	
+	override IScope getScope(EObject context, EReference reference) {
+		/*System.out.println("test")
+		System.out.println(context)
+		
+		switch (context) {
+			VariableUse: return context.getScope
+		}*/
+		super.getScope(context, reference)
+	}
+	
+	def IScope getScope(VariableUse variableUse) {
+		val variable = EcoreUtil2.getContainerOfType(variableUse, Variable)
+		
+		System.out.println(variableUse)
+		System.out.println(variable)
+		System.out.println(variable.exp)
+		
+		return explore(variable.exp, new HashMap<String, Boolean>())
+	}
+	
+	def IScope explore(Exp exp, HashMap<String, Boolean> letVariables) {
+		System.out.println("hello")
+		System.out.println(exp)
+		
+		switch (exp) {
+			VariableUse: {
+				System.out.println("111111111111111111")
+				System.out.println(exp)
+			}
+			LetVariable: {
+				letVariables.put(exp.name, true)
+				explore(exp.exp, letVariables)
+			}
+			Plus: {
+				explore(exp.left, letVariables)
+				explore(exp.right, letVariables)
+			}
+			Minus: {
+				explore(exp.left, letVariables)
+				explore(exp.right, letVariables)
+			}
+			Multi: {
+				explore(exp.left, letVariables)
+				explore(exp.right, letVariables)
+			}
+			Divi: {
+				explore(exp.left, letVariables)
+				explore(exp.right, letVariables)
+			}
+		}
+		
+		return IScope.NULLSCOPE
+	}
 }
