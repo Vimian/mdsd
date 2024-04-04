@@ -8,8 +8,8 @@ import dk.sdu.mmmi.mdsd.math.Exp
 import dk.sdu.mmmi.mdsd.math.MathExp
 import dk.sdu.mmmi.mdsd.math.Minus
 import dk.sdu.mmmi.mdsd.math.Mult
+import dk.sdu.mmmi.mdsd.math.Number
 import dk.sdu.mmmi.mdsd.math.Plus
-import dk.sdu.mmmi.mdsd.math.Primary
 import java.util.HashMap
 import java.util.Map
 import javax.swing.JOptionPane
@@ -17,6 +17,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import dk.sdu.mmmi.mdsd.math.VariableUse
+import dk.sdu.mmmi.mdsd.math.LetBinding
+import dk.sdu.mmmi.mdsd.math.VariableExp
 
 /**
  * Generates code from your model files on save.
@@ -32,40 +35,61 @@ class MathGenerator extends AbstractGenerator {
 		val result = math.compute
 		
 		// You can replace with hovering, see Bettini Chapter 8
-		result.displayPanel
+		//result.displayPanel
+		
+		//fsa.generateFile('''"math_expression/«math.name».java"''', math.compile)
 	}
+	
+	/*def compile(MathExp math) {
+		'''
+		Package math_expression;
+		
+		public class «math.name» {
+			«FOR variable: math.varExp»
+				public int «variable.name»;
+			«ENDFOR»
+			
+			public void compute() {
+				«FOR variable: math.varExp»
+				«variable.name» = «variable.exp.computeExp»;
+				«ENDFOR»
+			}
+		}
+		'''
+	}*/
 	
 	//
 	// Compute function: computes value of expression
 	// Note: written according to illegal left-recursive grammar, requires fix
 	//
 	
-	def static compute(MathExp math) { 
-		math.exp.computeExp
+	def static compute(MathExp math) {
+		variables = newHashMap()
+		for (variableExp: math.varExp) {
+			variables.put(variableExp.name, variableExp.exp.computeExp)
+		}
 		return variables
 	}
 	
+	//def CharSequence compute(Exp exp) {
 	def static int computeExp(Exp exp) {
-		val left = exp.left.computePrim
-		switch exp.operator {
-			Plus: left+exp.right.computePrim
-			Minus: left-exp.right.computePrim
-			Mult: left*exp.right.computePrim
-			Div: left/exp.right.computePrim
-			default: left
+		switch exp {
+			Number: exp.value
+			//Plus: exp.left.computeExp + '+' + exp.right.computeExp
+			Plus: exp.left.computeExp+exp.right.computeExp
+			Minus: exp.left.computeExp-exp.right.computeExp
+			Mult: exp.left.computeExp*exp.right.computeExp
+			Div: exp.left.computeExp/exp.right.computeExp
+			VariableUse: exp.ref.computeVariableBinding
+			LetBinding: exp.body.computeExp
 		}
 	}
 	
-	def static int computePrim(Primary factor) { 
-		87
+	def static dispatch int computeVariableBinding(VariableExp exp) {
+		variables.get(exp.name)
 	}
-
-	def void displayPanel(Map<String, Integer> result) {
-		var resultString = ""
-		for (entry : result.entrySet()) {
-         	resultString += "var " + entry.getKey() + " = " + entry.getValue() + "\n"
-        }
-		
-		JOptionPane.showMessageDialog(null, resultString ,"Math Language", JOptionPane.INFORMATION_MESSAGE)
+	
+	def static dispatch int computeVariableBinding(LetBinding exp) {
+		exp.binding.computeExp
 	}
 }

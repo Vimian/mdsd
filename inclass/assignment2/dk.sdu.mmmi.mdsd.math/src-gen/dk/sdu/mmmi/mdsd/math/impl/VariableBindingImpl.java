@@ -5,46 +5,55 @@ package dk.sdu.mmmi.mdsd.math.impl;
 
 import dk.sdu.mmmi.mdsd.math.MathPackage;
 import dk.sdu.mmmi.mdsd.math.VariableBinding;
-import dk.sdu.mmmi.mdsd.math.VariableUse;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variable Use</b></em>'.
+ * An implementation of the model object '<em><b>Variable Binding</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link dk.sdu.mmmi.mdsd.math.impl.VariableUseImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link dk.sdu.mmmi.mdsd.math.impl.VariableBindingImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VariableUseImpl extends ExpImpl implements VariableUse
+public class VariableBindingImpl extends MinimalEObjectImpl.Container implements VariableBinding
 {
   /**
-   * The cached value of the '{@link #getRef() <em>Ref</em>}' reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRef()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected VariableBinding ref;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected VariableUseImpl()
+  protected VariableBindingImpl()
   {
     super();
   }
@@ -57,7 +66,7 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
   @Override
   protected EClass eStaticClass()
   {
-    return MathPackage.Literals.VARIABLE_USE;
+    return MathPackage.Literals.VARIABLE_BINDING;
   }
 
   /**
@@ -66,29 +75,9 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
    * @generated
    */
   @Override
-  public VariableBinding getRef()
+  public String getName()
   {
-    if (ref != null && ref.eIsProxy())
-    {
-      InternalEObject oldRef = (InternalEObject)ref;
-      ref = (VariableBinding)eResolveProxy(oldRef);
-      if (ref != oldRef)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MathPackage.VARIABLE_USE__REF, oldRef, ref));
-      }
-    }
-    return ref;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public VariableBinding basicGetRef()
-  {
-    return ref;
+    return name;
   }
 
   /**
@@ -97,12 +86,12 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
    * @generated
    */
   @Override
-  public void setRef(VariableBinding newRef)
+  public void setName(String newName)
   {
-    VariableBinding oldRef = ref;
-    ref = newRef;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MathPackage.VARIABLE_USE__REF, oldRef, ref));
+      eNotify(new ENotificationImpl(this, Notification.SET, MathPackage.VARIABLE_BINDING__NAME, oldName, name));
   }
 
   /**
@@ -115,9 +104,8 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
   {
     switch (featureID)
     {
-      case MathPackage.VARIABLE_USE__REF:
-        if (resolve) return getRef();
-        return basicGetRef();
+      case MathPackage.VARIABLE_BINDING__NAME:
+        return getName();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -132,8 +120,8 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
   {
     switch (featureID)
     {
-      case MathPackage.VARIABLE_USE__REF:
-        setRef((VariableBinding)newValue);
+      case MathPackage.VARIABLE_BINDING__NAME:
+        setName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -149,8 +137,8 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
   {
     switch (featureID)
     {
-      case MathPackage.VARIABLE_USE__REF:
-        setRef((VariableBinding)null);
+      case MathPackage.VARIABLE_BINDING__NAME:
+        setName(NAME_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -166,10 +154,27 @@ public class VariableUseImpl extends ExpImpl implements VariableUse
   {
     switch (featureID)
     {
-      case MathPackage.VARIABLE_USE__REF:
-        return ref != null;
+      case MathPackage.VARIABLE_BINDING__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
   }
 
-} //VariableUseImpl
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
+  }
+
+} //VariableBindingImpl

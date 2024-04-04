@@ -3,6 +3,9 @@
  */
 package dk.sdu.mmmi.mdsd.validation
 
+import dk.sdu.mmmi.mdsd.math.VariableExp
+import org.eclipse.xtext.validation.Check
+import dk.sdu.mmmi.mdsd.math.MathExp
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +14,13 @@ package dk.sdu.mmmi.mdsd.validation
  */
 class MathValidator extends AbstractMathValidator {
 	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MathPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	public static final String VAR_UNIQUE = 'var_unique'
 	
+	@Check
+	def void unigueGlobal(VariableExp binding) {
+		if((binding.eContainer as MathExp).varExp.filter[name == binding.name]) {
+			error('Duplicate')
+		}
+		
+	}
 }
