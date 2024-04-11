@@ -1,0 +1,42 @@
+grammar dk.sdu.mdsd.entityRelation.EntityRelation with org.eclipse.xtext.common.Terminals
+
+generate entityRelation "http://www.sdu.dk/mdsd/entityRelation/EntityRelation"
+
+EntityRoot:
+	'System' name=ID
+	externals+=ExternalDef*
+	(relations+=Relation|entities+=Entity)+
+;
+
+ExternalDef:
+	'external' name=ID '(' ( parameters+=Type (',' parameters+=Type)* )? ')'
+;
+
+Entity:
+	'entity' name=ID (attribute+=Attribute | requires+=Require)*
+;
+
+Require:
+	'require' (
+		({Exp} left=ID '=>' right=INT) |
+		FunctionCall
+	)
+;
+
+FunctionCall:
+	function=ID '(' ( arguments+=[Attribute] (',' aurguments+=[Attribute])* )? ')'
+;
+
+
+Attribute:
+	'attribute' name=ID 'as' type=Type
+;
+
+Type:
+	'string' | 'number'
+;
+
+Relation:
+	{Inheritance} 'relation' baseEntity=[Entity] 'is' superEntity=[Entity]|
+	{Association} 'relation' ('a'|manyFrom?='many')? from=[Entity] ('has' | 'have') ('a'|manyTo?='many')? to=[Entity]
+;
