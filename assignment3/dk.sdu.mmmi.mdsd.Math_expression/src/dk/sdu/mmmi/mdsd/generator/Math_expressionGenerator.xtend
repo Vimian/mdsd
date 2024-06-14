@@ -20,6 +20,11 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.eclipse.xtext.generator.IFileSystemAccess2
 
+/**
+ * Generates code from your model files on save.
+ * 
+ * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
+ */
 class Math_expressionGenerator extends AbstractGenerator {
 	
 	static Map<String, Integer> variables;
