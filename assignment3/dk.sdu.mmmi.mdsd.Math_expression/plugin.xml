@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package
+			uri = "http://www.sdu.dk/mmmi/mdsd/Math_expression"
+			class = "dk.sdu.mmmi.mdsd.math_expression.Math_expressionPackage"
+			genModel = "model/generated/Math_expression.genmodel" />
+	</extension>
+</plugin>
