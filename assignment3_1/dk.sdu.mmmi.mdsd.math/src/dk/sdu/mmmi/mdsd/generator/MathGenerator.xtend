@@ -31,35 +31,38 @@ class MathGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val math = resource.allContents.filter(MathExp).next
-		//val result = math.compute
+		val result = math.compute
 		//result.displayPanel
 
 		fsa.generateFile('''math_expression/«math.name».java''', math.compile)
 	}
 	
 	def static String compile(MathExp math) {
-		
+		variables = math.compute
+
 		'''
 		package math_expression;
 		public class «math.name» {
 
-			public int x;
-			public int y;
+			«FOR varBinding : math.variables»
+			public int «varBinding.name»;
+			«ENDFOR»
 
-			private External external;
+			/*private External external;
 			
 			public MathComputation(External external) {
 				this.external = external
-			}
+			}*/
 
 			public void compute() {
-				x = 2 + 2;
-				y = this.external.sqrt(x);
+				«FOR varBinding : math.variables»
+				«varBinding.name» = «variables.get(varBinding.name)»;
+				«ENDFOR»
 			}
 
-			interface External {
+			/*interface External {
 				public int sqrt(int n);
-			}
+			}*/
 		}
 		'''
 	}
