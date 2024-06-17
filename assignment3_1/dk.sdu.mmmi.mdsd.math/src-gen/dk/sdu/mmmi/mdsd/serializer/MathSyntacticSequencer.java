@@ -58,6 +58,7 @@ public class MathSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) 'let' name=ID
 	 *     (rule start) (ambiguity) ref=[Binding|ID]
+	 *     (rule start) (ambiguity) ref=[External|ID]
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) {Div.left=}
 	 *     (rule start) (ambiguity) {Minus.left=}

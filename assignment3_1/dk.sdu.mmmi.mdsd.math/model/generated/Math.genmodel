@@ -8,7 +8,16 @@
       fileExtensions="math" ecorePackage="Math.ecore#/">
     <genClasses ecoreClass="Math.ecore#//MathExp">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//MathExp/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//MathExp/externals"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//MathExp/variables"/>
+    </genClasses>
+    <genClasses ecoreClass="Math.ecore#//External">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//External/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//External/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Math.ecore#//ExternalUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Math.ecore#//ExternalUse/ref"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Math.ecore#//ExternalUse/arguments"/>
     </genClasses>
     <genClasses ecoreClass="Math.ecore#//VarBinding">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Math.ecore#//VarBinding/expression"/>

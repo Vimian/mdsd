@@ -5,6 +5,8 @@ package dk.sdu.mmmi.mdsd.serializer;
 
 import com.google.inject.Inject;
 import dk.sdu.mmmi.mdsd.math.Div;
+import dk.sdu.mmmi.mdsd.math.External;
+import dk.sdu.mmmi.mdsd.math.ExternalUse;
 import dk.sdu.mmmi.mdsd.math.LetBinding;
 import dk.sdu.mmmi.mdsd.math.MathExp;
 import dk.sdu.mmmi.mdsd.math.MathNumber;
@@ -42,6 +44,12 @@ public class MathSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			switch (semanticObject.eClass().getClassifierID()) {
 			case MathPackage.DIV:
 				sequence_Factor(context, (Div) semanticObject); 
+				return; 
+			case MathPackage.EXTERNAL:
+				sequence_External(context, (External) semanticObject); 
+				return; 
+			case MathPackage.EXTERNAL_USE:
+				sequence_ExternalUse(context, (ExternalUse) semanticObject); 
 				return; 
 			case MathPackage.LET_BINDING:
 				sequence_LetBinding(context, (LetBinding) semanticObject); 
@@ -126,6 +134,50 @@ public class MathSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getExpAccess().getPlusLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getExpAccess().getRightFactorParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     ExternalUse returns ExternalUse
+	 *     Exp returns ExternalUse
+	 *     Exp.Plus_1_0_0_0 returns ExternalUse
+	 *     Exp.Minus_1_0_1_0 returns ExternalUse
+	 *     Factor returns ExternalUse
+	 *     Factor.Mult_1_0_0_0 returns ExternalUse
+	 *     Factor.Div_1_0_1_0 returns ExternalUse
+	 *     Primary returns ExternalUse
+	 *
+	 * Constraint:
+	 *     (ref=[External|ID] arguments+=INT arguments+=INT*)
+	 * </pre>
+	 */
+	protected void sequence_ExternalUse(ISerializationContext context, ExternalUse semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     External returns External
+	 *
+	 * Constraint:
+	 *     (name=ID type=ID)
+	 * </pre>
+	 */
+	protected void sequence_External(ISerializationContext context, External semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MathPackage.Literals.EXTERNAL__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathPackage.Literals.EXTERNAL__NAME));
+			if (transientValues.isValueTransient(semanticObject, MathPackage.Literals.EXTERNAL__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MathPackage.Literals.EXTERNAL__TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getExternalAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getExternalAccess().getTypeIDTerminalRuleCall_3_0(), semanticObject.getType());
 		feeder.finish();
 	}
 	
@@ -228,7 +280,7 @@ public class MathSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     MathExp returns MathExp
 	 *
 	 * Constraint:
-	 *     (name=ID variables+=VarBinding*)
+	 *     (name=ID externals+=External* variables+=VarBinding*)
 	 * </pre>
 	 */
 	protected void sequence_MathExp(ISerializationContext context, MathExp semanticObject) {

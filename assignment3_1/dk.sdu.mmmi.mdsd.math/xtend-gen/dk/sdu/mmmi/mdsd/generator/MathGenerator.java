@@ -6,6 +6,8 @@ package dk.sdu.mmmi.mdsd.generator;
 import com.google.common.collect.Iterators;
 import dk.sdu.mmmi.mdsd.math.Binding;
 import dk.sdu.mmmi.mdsd.math.Div;
+import dk.sdu.mmmi.mdsd.math.Expression;
+import dk.sdu.mmmi.mdsd.math.External;
 import dk.sdu.mmmi.mdsd.math.LetBinding;
 import dk.sdu.mmmi.mdsd.math.MathExp;
 import dk.sdu.mmmi.mdsd.math.MathNumber;
@@ -16,6 +18,7 @@ import dk.sdu.mmmi.mdsd.math.VarBinding;
 import dk.sdu.mmmi.mdsd.math.VariableUse;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
@@ -26,6 +29,8 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 /**
  * Generates code from your model files on save.
@@ -39,19 +44,19 @@ public class MathGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     final MathExp math = Iterators.<MathExp>filter(resource.getAllContents(), MathExp.class).next();
-    final Map<String, Integer> result = MathGenerator.compute(math);
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("math_expression/");
     String _name = math.getName();
     _builder.append(_name);
     _builder.append(".java");
-    fsa.generateFile(_builder.toString(), MathGenerator.compile(math));
+    fsa.generateFile(_builder.toString(), MathGenerator.compile(math, resource));
   }
 
-  public static String compile(final MathExp math) {
+  public static String compile(final MathExp math, final Resource resource) {
     String _xblockexpression = null;
     {
-      MathGenerator.variables = MathGenerator.compute(math);
+      List<VarBinding> variables = IteratorExtensions.<VarBinding>toList(Iterators.<VarBinding>filter(resource.getAllContents(), VarBinding.class));
+      List<External> externals = IteratorExtensions.<External>toList(Iterators.<External>filter(resource.getAllContents(), External.class));
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("package math_expression;");
       _builder.newLine();
@@ -62,8 +67,7 @@ public class MathGenerator extends AbstractGenerator {
       _builder.newLineIfNotEmpty();
       _builder.newLine();
       {
-        EList<VarBinding> _variables = math.getVariables();
-        for(final VarBinding varBinding : _variables) {
+        for(final VarBinding varBinding : variables) {
           _builder.append("\t");
           _builder.append("public int ");
           String _name_1 = varBinding.getName();
@@ -72,34 +76,45 @@ public class MathGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
         }
       }
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("/*private External external;");
-      _builder.newLine();
       _builder.append("\t");
       _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public MathComputation(External external) {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.external = external");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}*/");
-      _builder.newLine();
+      {
+        final List<External> _converted_externals = (List<External>)externals;
+        int _length = ((Object[])Conversions.unwrapArray(_converted_externals, Object.class)).length;
+        boolean _greaterThan = (_length > 0);
+        if (_greaterThan) {
+          _builder.append("\t");
+          _builder.append("private External external;");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("public ");
+          String _name_2 = math.getName();
+          _builder.append(_name_2, "\t");
+          _builder.append("(External external) {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("this.external = external");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("}\t");
+          _builder.newLine();
+        }
+      }
       _builder.newLine();
       _builder.append("\t");
       _builder.append("public void compute() {");
       _builder.newLine();
       {
-        EList<VarBinding> _variables_1 = math.getVariables();
-        for(final VarBinding varBinding_1 : _variables_1) {
+        for(final VarBinding varBinding_1 : variables) {
           _builder.append("\t\t");
-          String _name_2 = varBinding_1.getName();
-          _builder.append(_name_2, "\t\t");
+          String _name_3 = varBinding_1.getName();
+          _builder.append(_name_3, "\t\t");
           _builder.append(" = ");
-          Integer _get = MathGenerator.variables.get(varBinding_1.getName());
-          _builder.append(_get, "\t\t");
+          Expression _expression = varBinding_1.getExpression();
+          _builder.append(_expression, "\t\t");
           _builder.append(";");
           _builder.newLineIfNotEmpty();
         }
@@ -107,16 +122,31 @@ public class MathGenerator extends AbstractGenerator {
       _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("/*interface External {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("public int sqrt(int n);");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}*/");
-      _builder.newLine();
+      {
+        for(final External external : externals) {
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("interface External {");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("\t");
+          _builder.append("public ");
+          String _type = external.getType();
+          _builder.append(_type, "\t\t");
+          _builder.append(" ");
+          String _name_4 = external.getName();
+          _builder.append(_name_4, "\t\t");
+          _builder.append("(");
+          String _type_1 = external.getType();
+          _builder.append(_type_1, "\t\t");
+          _builder.append(" n);");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+        }
+      }
       _builder.append("}");
       _builder.newLine();
       _xblockexpression = _builder.toString();

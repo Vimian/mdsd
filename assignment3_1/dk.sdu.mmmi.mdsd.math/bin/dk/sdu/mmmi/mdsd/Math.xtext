@@ -4,7 +4,16 @@ generate math "http://www.sdu.dk/mmmi/mdsd/Math"
 
 MathExp:
 	'program' name=ID
+	externals += External*
 	variables += VarBinding*
+;
+
+External:
+	'external' name=ID '(' type=ID ')' 
+;
+
+ExternalUse:
+	ref=[External] '('arguments += INT (',' arguments += INT)*')'
 ;
 
 VarBinding:
@@ -20,7 +29,7 @@ Factor returns Expression:
 ;
 
 Primary returns Expression:
-	{MathNumber} value=INT  | '(' Exp ')'  |  VariableUse | LetBinding
+	{MathNumber} value=INT  | '(' Exp ')'  |  VariableUse | LetBinding | ExternalUse
 ;
 
 LetBinding:

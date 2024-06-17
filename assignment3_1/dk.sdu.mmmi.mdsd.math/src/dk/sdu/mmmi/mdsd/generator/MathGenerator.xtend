@@ -12,6 +12,7 @@ import dk.sdu.mmmi.mdsd.math.Mult
 import dk.sdu.mmmi.mdsd.math.Plus
 import dk.sdu.mmmi.mdsd.math.VarBinding
 import dk.sdu.mmmi.mdsd.math.VariableUse
+import dk.sdu.mmmi.mdsd.math.External
 import java.util.HashMap
 import java.util.Map
 import javax.swing.JOptionPane
@@ -31,38 +32,43 @@ class MathGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val math = resource.allContents.filter(MathExp).next
-		val result = math.compute
+		//val result = math.compute
 		//result.displayPanel
 
-		fsa.generateFile('''math_expression/«math.name».java''', math.compile)
+		fsa.generateFile('''math_expression/«math.name».java''', compile(math, resource))
 	}
 	
-	def static String compile(MathExp math) {
-		variables = math.compute
+	def static String compile(MathExp math, Resource resource) {
+		var variables = resource.allContents.filter(VarBinding).toList
+		var externals = resource.allContents.filter(External).toList
 
 		'''
 		package math_expression;
 		public class «math.name» {
 
-			«FOR varBinding : math.variables»
+			«FOR varBinding : variables»
 			public int «varBinding.name»;
 			«ENDFOR»
-
-			/*private External external;
 			
-			public MathComputation(External external) {
+			«IF externals.length > 0»
+			private External external;
+			
+			public «math.name»(External external) {
 				this.external = external
-			}*/
+			}	
+			«ENDIF»
 
 			public void compute() {
-				«FOR varBinding : math.variables»
-				«varBinding.name» = «variables.get(varBinding.name)»;
+				«FOR varBinding : variables»
+				«varBinding.name» = «varBinding.expression»;
 				«ENDFOR»
 			}
-
-			/*interface External {
-				public int sqrt(int n);
-			}*/
+			«FOR external : externals»
+			
+			interface External {
+				public «external.type» «external.name»(«external.type» n);
+			}
+			«ENDFOR»
 		}
 		'''
 	}

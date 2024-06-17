@@ -1,0 +1,86 @@
+grammar dk.sdu.mmmi.mdsd.Ui with org.eclipse.xtext.common.Terminals
+
+generate ui "http://www.sdu.dk/mmmi/mdsd/Ui"
+
+UI23: 'title' name=ID form=Form;
+
+Form:
+	'form' name=ID '{' layout=Layout '}'
+;
+
+
+Layout:
+	Column | Row
+;
+
+Column:
+	'column' '{' 
+		elements+=Element+ 
+	'}'
+	
+;
+
+Row:
+	'row' '{'
+		elements+=Element+ 	
+	'}'	
+;
+
+Element:
+	Label | Input | Button | Layout
+;
+
+Label:
+	'label' ':' value=STRING
+;
+
+Input:
+	'input' name=ID ':' exp=Exp
+;
+
+Button:
+	'button' name=ID ':' value=STRING | {StarButton}'button*' name=ID ':' value=STRING 
+;
+
+Type:
+	{StringType} value='string' | {HashStringType} value='#string'  | {NumberType}value='number'
+;
+
+Exp:
+	BooleanExp
+;
+
+BooleanExp returns Exp:
+	EqualityExp (
+		{And.left=current} '&&' right=EqualityExp |
+		{Or.left=current} '||' right=EqualityExp
+	)*
+;
+
+EqualityExp returns Exp:
+	LessGreaterExp (
+		{Equals.left=current} '==' right=LessGreaterExp |
+		{NotEqual.left=current} '!=' right=LessGreaterExp
+	)*
+;
+
+LessGreaterExp returns Exp:
+	Primary (
+		{Less.left=current} '<' right=Primary |
+		{LessOrEqual.left=current} '<=' right=Primary |
+		{Greater.left=current} '>' right=Primary |
+		{GreaterOrEqual.left=current} '>=' right=Primary
+	)*
+;
+
+Primary returns Exp:
+	{Number}value=INT | type=Type | InputUse
+;
+
+InputUse:
+	ref=[Input]
+;
+
+
+
+
