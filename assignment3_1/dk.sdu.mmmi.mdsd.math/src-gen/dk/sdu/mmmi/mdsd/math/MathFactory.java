@@ -33,6 +33,24 @@ public interface MathFactory extends EFactory
   MathExp createMathExp();
 
   /**
+   * Returns a new object of class '<em>External</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>External</em>'.
+   * @generated
+   */
+  External createExternal();
+
+  /**
+   * Returns a new object of class '<em>External Use</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>External Use</em>'.
+   * @generated
+   */
+  ExternalUse createExternalUse();
+
+  /**
    * Returns a new object of class '<em>Var Binding</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
